@@ -30,8 +30,7 @@ BuNest is a mobile application designed for university students and professors t
 3. Install dependencies: `npm install`
 
 ### Creating new App using Expo
-npx create-expo-app bunest -t tabs
-
+`npx create-expo-app bunest -t tabs`
 ### Running the App
 
 - Start the app using Expo CLI: `expo start`

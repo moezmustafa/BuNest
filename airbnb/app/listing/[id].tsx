@@ -8,7 +8,7 @@ const Page = () => {
     const {id} = useLocalSearchParams<{id : string}>(); 
 
     // this is creating the log messages 
-    console.log('🚀 ~file: [id].tsx7 ~ Page ~ id:' , id);
+   // console.log('🚀 ~file: [id].tsx7 ~ Page ~ id:' , id);
 
     return (
 

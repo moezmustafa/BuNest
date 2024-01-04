@@ -1,14 +1,12 @@
-import { View , Text } from 'react-native';
+import { View, Text } from 'react-native';
 import React from 'react';
 
 const Page = () => {
-    return (
+  return (
+    <View>
+      <Text>Page</Text>
+    </View>
+  );
+};
 
-      <View>
-        <Text>Inbox</Text>
-        </View>
-    );
-}
-
-export default Page
-
+export default Page;

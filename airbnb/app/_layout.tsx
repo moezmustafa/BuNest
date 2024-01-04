@@ -1,21 +1,14 @@
-
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack, useRouter } from 'expo-router';
 import { useEffect } from 'react';
+import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
+import * as SecureStore from 'expo-secure-store';
 import { Ionicons } from '@expo/vector-icons';
+import Colors from '@/constants/Colors';
+import ModalHeaderText from '@/components/ModalHeaderText';
 import { TouchableOpacity } from 'react-native';
 
-import { ClerkProvider, useAuth } from '@clerk/clerk-expo';    
-import * as SecureStore from 'expo-secure-store';
-
-import * as GoogleSingIn from 'expo-auth-session/providers/google';
-
-
-
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
-
-
-//const CLERK_PUBLISHABLE_KEY = 'pk_test_aGlwLWRvbmtleS0zLmNsZXJrLmFjY291bnRzLmRldiQ';
 // Cache the Clerk JWT
 const tokenCache = {
   async getToken(key: string) {
@@ -34,29 +27,14 @@ const tokenCache = {
   },
 };
 
-
-
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
-
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-
-
   const [loaded, error] = useFonts({
-
-   mon : require('@/assets/fonts/Montserrat-Regular.ttf'),
-    'mon-sb' : require('@/assets/fonts/Montserrat-SemiBold.ttf'),
-    'mon-b' : require('@/assets/fonts/Montserrat-Light.ttf'),
+    mon: require('../assets/fonts/Montserrat-Regular.ttf'),
+    'mon-sb': require('../assets/fonts/Montserrat-SemiBold.ttf'),
+    'mon-b': require('../assets/fonts/Montserrat-Bold.ttf'),
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -82,67 +60,57 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-
+  const { isLoaded, isSignedIn } = useAuth();
   const router = useRouter();
 
-  const { isLoaded , isSignedIn } = useAuth();
-
+  // Automatically open login if user is not authenticated
   useEffect(() => {
-
-      if (isLoaded && !isSignedIn) {
-        router.push('/(modals)/login');
-      }
+    if (isLoaded && !isSignedIn) {
+      router.push('/(modals)/login');
+    }
   }, [isLoaded]);
 
-
-
-  
-
   return (
-   
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen 
+    <Stack>
+      <Stack.Screen
         name="(modals)/login"
-         options={{
-          title : 'Log in or Sign up',
-          headerTitleStyle : { fontFamily : 'mon-sb'},
-           presentation: 'modal',
-
-           headerLeft : () => (
-
+        options={{
+          presentation: 'modal',
+          title: 'Log in or sign up',
+          headerTitleStyle: {
+            fontFamily: 'mon-sb',
+          },
+          headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons name='close-outline' size={28} />
-            </TouchableOpacity> 
-
-           ),
-         }}
-          />
-
-          <Stack.Screen
-          name = "listing/(id)" options={{headerTitle: ''}} />
-
-          <Stack.Screen
-
-          name  = "(modals)/booking" options = {{
-          
-            presentation : 'transparentModal',
-            animation : 'fade', 
-
-            headerLeft : () => (
-
-              <TouchableOpacity onPress={() => router.back()}>
-              <Ionicons name='close-outline' size={28} />
-              </TouchableOpacity> 
-  
-             ),
-
-          }}
-
-          />
-
-
-      </Stack>
- 
+              <Ionicons name="close-outline" size={28} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="listing/[id]" options={{ headerTitle: '' }} />
+      <Stack.Screen
+        name="(modals)/booking"
+        options={{
+          presentation: 'transparentModal',
+          animation: 'fade',
+          headerTransparent: true,
+          headerTitle: (props) => <ModalHeaderText />,
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => router.back()}
+              style={{
+                backgroundColor: '#fff',
+                borderColor: Colors.grey,
+                borderRadius: 20,
+                borderWidth: 1,
+                padding: 4,
+              }}>
+              <Ionicons name="close-outline" size={22} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+    </Stack>
   );
 }

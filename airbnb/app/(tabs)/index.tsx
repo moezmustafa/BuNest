@@ -1,22 +1,33 @@
-import { View , Text } from 'react-native';
-import React from 'react';
-import { Link } from 'expo-router';
+import { View } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import ListingsBottomSheet from '@/components/ListingsBottomSheet';
+import listingsData from '@/assets/data/airbnb-listings.json';
+import ListingsMap from '@/components/ListingsMap';
+import listingsDataGeo from '@/assets/data/airbnb-listings.geo.json';
+import { Stack } from 'expo-router';
+import ExploreHeader from '@/components/ExploreHeader';
 
 const Page = () => {
-    return (
+  const items = useMemo(() => listingsData as any, []);
+  const getoItems = useMemo(() => listingsDataGeo, []);
+  const [category, setCategory] = useState<string>('Tiny homes');
 
-      <View>
-        <Text>Page</Text>
+  const onDataChanged = (category: string) => {
+    setCategory(category);
+  };
 
-    <Link href={'./(modals)/login'}>Login</Link>
-    <Link href={'./(modals)/booking'}>BOOK</Link>
-    
-    <Link href={'./listing/1337'}>listing details</Link>
+  return (
+    <View style={{ flex: 1, marginTop: 80 }}>
+      {/* Define pour custom header */}
+      <Stack.Screen
+        options={{
+          header: () => <ExploreHeader onCategoryChanged={onDataChanged} />,
+        }}
+      />
+      <ListingsMap listings={getoItems} />
+    <ListingsBottomSheet listings={items} category={category} />
+    </View>
+  );
+};
 
-        
-        </View>
-    );
-}
-
-export default Page
-
+export default Page;

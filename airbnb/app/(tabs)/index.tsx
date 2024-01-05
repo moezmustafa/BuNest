@@ -25,7 +25,7 @@ const Page = () => {
         }}
       />
       <ListingsMap listings={getoItems} />
-    <ListingsBottomSheet listings={items} category={category} />
+      <ListingsBottomSheet listings={items} category={category} />
     </View>
   );
 };

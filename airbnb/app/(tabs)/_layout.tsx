@@ -13,36 +13,12 @@ const Layout = () => {
           fontFamily: 'mon-sb',
         },
       }}>
-      <Tabs.Screen
+ 
+ <Tabs.Screen
         name="index"
         options={{
           tabBarLabel: 'Explore',
           tabBarIcon: ({ size, color }) => <Ionicons name="search" size={size} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="whishlists"
-        options={{
-          tabBarLabel: 'Wishlists',
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name="heart-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="trips"
-        options={{
-          tabBarLabel: 'Trips',
-          tabBarIcon: ({ size, color }) => <FontAwesome5 name="airbnb" size={size} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="inbox"
-        options={{
-          tabBarLabel: 'Inbox',
-          tabBarIcon: ({ size, color }) => (
-            <MaterialCommunityIcons name="message-outline" size={size} color={color} />
-          ),
         }}
       />
       <Tabs.Screen
